@@ -97,91 +97,10 @@ echo "Instal selesai."
 echo "========================="
 fi
 
-## Instalasi wordpress
-# rm /var/www/html/index.*  
-# wget -c http://wordpress.org/latest.tar.gz  
-# tar -xzvf latest.tar.gz  
-# rsync -av wordpress/* /var/www/html/  
-#  echo "wordpress sudah didownload"
-
-####Download dan extract WordPress
-# if test -f /tmp/latest.tar.gz
-# then
-# echo "WP is already downloaded."
-# else
-# echo "Downloading WordPress"
-# cd /tmp/ && wget "http://wordpress.org/latest.tar.gz";
-# fi
-# /bin/tar -C $install_dir -zxf /tmp/latest.tar.gz --strip-components=1
-# chown www-data: $install_dir -R
-
-# #### Create WP-config dan set DB credentials
-# /bin/mv $install_dir/wp-config-sample.php $install_dir/wp-config.php
-# /bin/sed -i "s/database_name_here/$db_name/g" $install_dir/wp-config.php
-# /bin/sed -i "s/username_here/$db_user/g" $install_dir/wp-config.php
-# /bin/sed -i "s/password_here/$db_password/g" $install_dir/wp-config.php
-# cat << EOF >> $install_dir/wp-config.php
-# define('FS_METHOD', 'direct');
-# EOF
-# cat << EOF >> $install_dir/.htaccess
-# # BEGIN WordPress
-# <IfModule mod_rewrite.c>
-# RewriteEngine On
-# RewriteBase /
-# RewriteRule ^index.php$ – [L]
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule . /index.php [L]
-# </IfModule>
-# # END WordPress
-# EOF
-# chown www-data: $install_dir -R
-
-# ##### Set WP Salts
-# grep -A50 'table_prefix' $install_dir/wp-config.php > /tmp/wp-tmp-config
-# /bin/sed -i '/**#@/,/$p/d' $install_dir/wp-config.php
-# /usr/bin/lynx --dump -width 200 https://api.wordpress.org/secret-key/1.1/salt/ >> $install_dir/wp-config.php
-# /bin/cat /tmp/wp-tmp-config >> $install_dir/wp-config.php && rm /tmp/wp-tmp-config -f
-# /usr/bin/mysql -u root -e "CREATE DATABASE $db_name"
-# /usr/bin/mysql -u root -e "CREATE USER '$db_name'@'localhost' IDENTIFIED WITH mysql_native_password BY '$db_password';"
-# /usr/bin/mysql -u root -e "GRANT ALL PRIVILEGES ON $db_name.* TO '$db_user'@'localhost';"
-
 
 ## Berikan izin ke direktori html
 chown -R www-data:www-data /var/www/html/  
 chmod -R 755 /var/www/html/ 
-
-## Instal db wordpress 
-#  export DEBIAN_FRONTEND="noninteractive"  
-#  debconf-set-selections <<< "mysql-server mysql-server/root_password password $db_root_password"  
-#  debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $db_root_password"  
-
-
-# ## akses mysql dan root password   
-# read -p 'wordpress_db_name [wp_db]: ' wordpress_db_name  
-# read -p 'db_root_password [only-alphanumeric]: ' db_root_password  
-#  echo  "OK"
-
-## Konfig db wordpress
-# mysql -uroot -p$db_password << QUERY_INPUT
-# CREATE DATABASE $db_name;  
-# GRANT ALL PRIVILEGES ON $db_name.* TO 'root'@'localhost' IDENTIFIED BY 'db_password';  
-# FLUSH PRIVILEGES;  
-# EXIT;  
-# QUERY_INPUT
-
-## Tambah db credentias in wordpress  
-# cd /var/www/html/  
-# sudo mv wp-config-sample.php wp-config.php  
-# perl -pi -e "s/database_name_here/$wordpress_db_name/g" wp-config.php  
-# perl -pi -e "s/username_here/root/g" wp-config.php  
-# perl -pi -e "s/password_here/$db_root_password/g" wp-config.php  
-
-## DB variable sosial-media pesbuk
-# mysql -e "CREATE USER $db_user;"
-# mysql -e "GRANT ALL PRIVILEGES ON $db_name.* TO '$db_user'@'localhost' IDENTIFIED BY '$db_pass';"
-# mysql -e "FLUSH PRIVILEGES;"
-# mysql -u devopscilsy -p dbsosmed < /var/www/html/sosial-media/dump.sql
 
 mysql -e "CREATE DATABASE dbsosmed;"
 mysql -e "CREATE USER 'devopscilsy'@'localhost' identified by '1234567890';"
